@@ -113,5 +113,39 @@ false = 0
 summarize(
 total_correct = sum(correct),
 accuracy = total_correct/n() #calculate the accuracy as the number of passengers that we correctly predicted divided by the total number of passenger
-
 )
+
+#use k-fold cross-validation to measure our model's performance on data that is has not seen
+logistic_cv1 <- cv.glm(train_imputed, model_1, cost, K=5) #3rd argument is a cost function to calculate the validation error, which calculates 1 - accuracy (i.e. the inaccuracy)
+#K is the number of ways the dataset will be divived up for cross-validation
+
+#save cross-validation output in a variable called logistic_cv1, and report its error
+logistic_cv1$delta #delta contains the overall cross-validaton error score 
+  
+#create a second multivariate logistic regression model using the age_imputed, SibSp, Pclass, and Sex variables as predictor variables
+model_2<- glm(
+Survived ~ age_imputed + SibSp + Pclass + Sex,
+family = binomial (),
+data = train_imputed
+)
+
+ #run cross-validation on model_2 to calculate its error
+logistic_cv2 <- cv.glm(train_imputed, model_2, cost, K=5)
+
+#save cross-validation output in a variable called logistic_cv2, and report its error
+logistic_cv2$delta
+
+#create a third logistic regression model with interaction between some of the variables
+model_3<- glm(
+#observe if age interacts with gender and class on survival
+Survived ~ age_imputed * Pclass * Sex + SibSp, #interacting variables: age_imputed, Pclass, and Sex
+family = binomial (),
+data = train_imputed
+)
+
+#run cross-validation on this model and report its error
+logistic_cv3 <- cv.glm(train_imputed, model_3, cost, K=5)
+logistic_cv3$delta
+
+
+  
