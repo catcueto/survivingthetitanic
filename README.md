@@ -138,7 +138,6 @@ fraction_missing = missing/count
 
 
 **Create first logistic regression model using the train_imputed dataframe with the Survived column as the response variable and age_imputed as the explanatory variable**
-
 ```
 model_1 <- glm(
 Survived ~ age_imputed,
@@ -147,8 +146,7 @@ data = train_imputed
 )
 ```
 
-
-**Calculate my model's predictions on the training data (train_imputed)**
+**Calculate my first model's predictions on the training data (train_imputed)**
 
 *Notes: Store the output dataframe with the 2 new columns: pred and outcome in a variable called model_1_preds*
 
@@ -166,7 +164,7 @@ false = 0
 )
 )
 ```
-**Calculate the accuracy of my model on the train_imputed dataframe**
+**Calculate the accuracy of my first model on the train_imputed dataframe**
 ```
 model_1_preds %>%
 mutate(
@@ -184,3 +182,46 @@ accuracy = total_correct/n()
 ![image](https://user-images.githubusercontent.com/106201440/225184211-db318853-b749-4d5a-8c60-ddafb12c7c2b.png)
 
 *Interpretation: The accuracy of my model is 0.6156 or 61.6%, and I can say that is **good** considering that it correctly predicted that 61% of the passengers died. IN the RMS Titanic, there was an estimated 2,224 passengers and crew aboard the ship, and more than 1,500 died, yielding a death rate of 66%.**
+
+**Use k-fold cross-validation to measure our model's performance on data that is has not seen**
+```
+logistic_cv1 <- cv.glm(train_imputed, model_1, cost, K=5)
+logistic_cv1$delta
+```
+![image](https://user-images.githubusercontent.com/106201440/225464838-72cb5db0-b015-4e1f-b9c9-8b22e97bf47a.png)
+
+**Train a second, multivariate logistic regression model, using the age_imputed, SibSp, Pclass, and Sex variables as predictor variables**
+```
+model_2<- glm(
+Survived ~ age_imputed + SibSp + Pclass + Sex,
+family = binomial (),
+data = train_imputed
+)
+```
+
+**Run cross-validation on second model to calculate its error**
+```
+logistic_cv2 <- cv.glm(train_imputed, model_2, cost, K=5)
+logistic_cv2$delta
+```
+![image](https://user-images.githubusercontent.com/106201440/225464994-e3b2354a-b05e-4b09-9644-acde18069de7.png)
+
+**Train a third logistic regression model with interaction between some of the variables**
+```
+model_3<- glm(
+Survived ~ age_imputed * Pclass * Sex + SibSp,
+family = binomial (),
+data = train_imputed
+)
+```
+
+**Run cross-validation on third model to calculate its error**
+```
+logistic_cv3 <- cv.glm(train_imputed, model_3, cost, K=5)
+logistic_cv3$delta
+```
+
+*Interpretation: model_3 has the most accurate and smallest validation error. Since we are training on more data for our third model, this is expected as the predictive power of a model usually increases with its complexity. 
+
+
+
