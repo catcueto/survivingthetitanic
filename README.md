@@ -34,7 +34,7 @@ Also note that the following definitions were used for `SibSp` and `Parch`:
 | Child        | Son, Daughter, Stepson, or Stepdaughter of Passenger Aboard Titanic          |
 
 ## PROCESS
-**Question of Interest:** Who would have survived the Titanic?
+**Question of Interest:** Who would have survived the Titanic? What conditions or factors influenced survival rates?
 
 **Overview**: I conducted my entire analysis, made predictive models, and created all visuaizations using R. I first took a look at how the chance of survival was affected by different continuous variables (age and fare), and then I observed how different categorical variables affected the passengers' survival chance. After acquiring some information regarding the most influencing variables on survival, I created three logical regression models to potentially find a cause and effect relationship between variables, but also to forecast future opportunities and threats.
 
