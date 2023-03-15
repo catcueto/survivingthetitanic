@@ -220,6 +220,7 @@ data = train_imputed
 logistic_cv3 <- cv.glm(train_imputed, model_3, cost, K=5)
 logistic_cv3$delta
 ```
+![image](https://user-images.githubusercontent.com/106201440/225466375-0b4fc1ba-7a01-4543-a734-935f0c6083db.png)
 
 *Interpretation: model_3 has the most accurate and smallest validation error. Since we are training on more data for our third model, this is expected as the predictive power of a model usually increases with its complexity.*
 
